@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag della release (es. v1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installa MinGW-w64
+        run: sudo apt-get update && sudo apt-get install -y g++-mingw-w64-x86-64 zip
+
+      - name: Compila madcatz_wheel.exe (x64, statico)
+        run: |
+          mkdir -p out
+          x86_64-w64-mingw32-g++ -O2 -Wall -Wextra -std=c++17 -municode -static \
+            src/main.cpp -o out/madcatz_wheel.exe -lwinmm
+          cp madcatz_wheel.ini README.md avvio_automatico.bat out/
+
+      - name: Crea pacchetto zip
+        run: cd out && zip -9 ../MadCatzWheel-Win11-x64.zip *
+
+      - name: Pubblica release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          cat > notes.md <<'NOTES'
+          Driver (bridge XInput → vJoy) per **MadCatz Wireless Force Feedback Racing Wheel Xbox 360** su Windows 11.
+
+          ### Download
+          - **MadCatzWheel-Win11-x64.zip**: `madcatz_wheel.exe`, `madcatz_wheel.ini`, `README.md`, `avvio_automatico.bat`
+          - **madcatz_wheel.exe**: solo l'eseguibile
+
+          ### Requisiti
+          - Ricevitore wireless Xbox 360 per Windows
+          - vJoy 2.1.9.1 configurato (assi X Y Z Rx Ry Rz, 16 pulsanti, 1 POV continuo, Enable Effects)
+
+          ### Primo avvio
+          1. `madcatz_wheel.exe --list`: il volante deve risultare "Volante (Wheel)"
+          2. `madcatz_wheel.exe --monitor`: verifica pulsanti e paddle
+          3. `madcatz_wheel.exe --ffb-test`: calibra il force feedback
+          4. `madcatz_wheel.exe`: lascialo aperto mentre giochi
+
+          L'eseguibile non è firmato: se SmartScreen lo blocca, scegli *Ulteriori informazioni* → *Esegui comunque*.
+          NOTES
+          gh release create "$TAG" MadCatzWheel-Win11-x64.zip out/madcatz_wheel.exe \
+            --target "$GITHUB_SHA" --title "MadCatz Wheel per Windows 11 $TAG" --notes-file notes.md
