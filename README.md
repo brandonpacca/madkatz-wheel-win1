@@ -4,6 +4,16 @@ Driver in user-mode che rende il volante utilizzabile nei giochi di guida su Win
 **assi separati** per sterzo, acceleratore e freno, **tutti i pulsanti** mappati e
 **force feedback** inoltrato dal gioco ai motori del volante.
 
+## ⬇️ Download
+
+**[Scarica l'ultima versione (MadCatzWheel-Win11-x64.zip)](https://github.com/brandonpacca/madkatz-wheel-win1/releases/latest/download/MadCatzWheel-Win11-x64.zip)**
+
+Lo zip contiene `madcatz_wheel.exe`, `madcatz_wheel.ini`, questa guida e `avvio_automatico.bat`.
+Se ti serve solo l'eseguibile: [madcatz_wheel.exe](https://github.com/brandonpacca/madkatz-wheel-win1/releases/latest/download/madcatz_wheel.exe).
+Tutte le versioni sono nella pagina [Releases](https://github.com/brandonpacca/madkatz-wheel-win1/releases).
+
+Prima di avviarlo servono il ricevitore wireless Xbox 360 e vJoy: segui la sezione [Installazione](#installazione).
+
 ## Il problema
 
 Il volante comunica tramite il **ricevitore wireless Xbox 360 per Windows**. Windows 11 lo
@@ -110,9 +120,9 @@ destro. Usa `--ffb-test` per verificare il comportamento del tuo volante e regol
 
 ### 3. Programma
 
-1. Copia in una cartella (es. `C:\MadCatzWheel\`):
-   - `madcatz_wheel.exe` (da `dist\` o compilato da te)
-   - `madcatz_wheel.ini`
+1. [Scarica lo zip](https://github.com/brandonpacca/madkatz-wheel-win1/releases/latest/download/MadCatzWheel-Win11-x64.zip)
+   ed estrailo in una cartella (es. `C:\MadCatzWheel\`). `madcatz_wheel.exe` e `madcatz_wheel.ini`
+   devono stare nella stessa cartella.
 2. Avvia `madcatz_wheel.exe --list`: il volante deve risultare **"Volante (Wheel)"**.
 3. Avvia `madcatz_wheel.exe --ffb-test` e regola la sezione `[ffb]` come indicato a schermo.
 4. Avvia `madcatz_wheel.exe` e lascialo aperto mentre giochi.
